@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+
+# require 'trackstar'
+require_relative '../lib/trackstar'
+require 'optparse'
+# include Trackstar
+
+options = {
+  post: true,
+  manual_date: false,
+  new: false,
+  chart: nil
+}
+OptionParser.new do |opts|
+  opts.banner = %(
+  Usage:
+    trackstar [options]
+
+  Example:
+    trackstar -n  # creates new Trackstar log
+    trackstar     # creates new Trackstar post in an existing Log
+    trackstar -g  # displays a graph a Trackstar log posts
+  )
+
+  opts.on '-d', '--date', 'Manually input date' do
+    options[:manual_date] = true
+    exit
+  end
+
+  opts.on '-n', '--new', 'Create new Trackstar log' do
+    options[:post] = false
+    exit
+  end
+
+  opts.on '-ch', '--chart-hours', 'Show chart of hours' do
+    options[:post] = false
+    options[:chart] = :hours
+  end
+
+  opts.on '-cc', '--chart-count', 'Show chart of count' do
+    options[:post] = false
+    options[:chart] = :count
+  end
+
+  opts.on_tail '-v', '--version', 'Show version' do
+    options[:post] = false
+    puts "trackstar v#{Trackstar::VERSION}"
+    exit
+  end
+
+  opts.on_tail '-h', '--help', 'I think you know what this does...' do
+    options[:post] = false
+    puts opts
+    exit
+  end
+
+end.parse!
+
+Trackstar.call(options)
