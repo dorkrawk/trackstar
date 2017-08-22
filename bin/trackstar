@@ -24,12 +24,11 @@ OptionParser.new do |opts|
 
   opts.on '-d', '--date', 'Manually input date' do
     options[:manual_date] = true
-    exit
   end
 
   opts.on '-n', '--new', 'Create new Trackstar log' do
     options[:post] = false
-    exit
+    options[:new] = true
   end
 
   opts.on '-ch', '--chart-hours', 'Show chart of hours' do

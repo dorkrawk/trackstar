@@ -1,4 +1,3 @@
-subject: text
-date: date
-hours: number
-notes: text
+subject: to_s
+hours: to_f
+notes: to_s

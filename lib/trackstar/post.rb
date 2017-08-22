@@ -1,8 +1,9 @@
 class Trackstar::Post
 
-  @@fields = { subject: :to_s, hours: :to_f, notes: :to_s } # hardcode for now
+  DEFAULT_FIELDS = { subject: :to_s, hours: :to_f, notes: :to_s } # hardcode for now
 
   def initialize
+    @fields = DEFAULT_FIELDS
     @values = {}
     now = Time.now
     @values[:timestamp] = now.to_i
@@ -12,7 +13,7 @@ class Trackstar::Post
   def build
     puts "New Post For #{@values[:date_time]}:"
     puts "---------------------"
-    @@fields.each do |key, casting_method|
+    @fields.each do |key, casting_method|
       begin
         puts "#{key}: "
         @values[key] = gets.chomp.send(casting_method)
