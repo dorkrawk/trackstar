@@ -22,6 +22,10 @@ class Trackstar::LogHelper
     FileTest.exists?(config_path)
   end
 
+  def self.missing_log
+    puts "Sorry, there doesn't seem to be a Trackstar log here."
+  end
+
   def self.set_up_name
     puts "So, what do you want to call this?"
     # add execption catching and good stuff like that
@@ -57,7 +61,7 @@ class Trackstar::LogHelper
     end
   end
 
-  def self.setup_log(options)
+  def self.setup_log
     log_options = {}
     puts "Ok! Let's set up your Trackstar log!"
     puts "------------------------------------"
@@ -72,11 +76,44 @@ class Trackstar::LogHelper
     puts ""
     puts "Sounds good? (y/n)"
     confirmation = gets.chomp.downcase
-    if YESES.include?(confirmation )
+    if YESES.include?(confirmation)
       self.create_log(log_options)
       puts "Ok, you're good to go."
     else
       puts "Ok, maybe next time."
     end
+  end
+
+  def self.create_post
+    post = Trackstar::Post.new
+    post.build
+    puts "Ok, here's your post:"
+    puts "-" * 10
+    post.preview
+    puts "-" * 10
+    puts "Look good? (y/n)"
+    confirmation = gets.chomp.downcase
+    if YESES.include?(confirmation)
+      post_file_name = self.persist_post(post)
+      puts "Post saved as #{post_file_name}"
+    else
+      puts "Try again? (y/n)"
+      confirmation = gets.chomp.downcase
+      self.create_post if YESES.include?(confirmation)
+    end
+  end
+
+  def self.persist_post(post)
+    subject_stub = self.stubify(post.values[:subject])
+    post_file_name = "posts/#{post.values[:timestamp]}-#{subject_stub}.md"
+    File.open(post_file_name, 'w') do |post_file|
+      post_file.puts "date: #{post.values[:date_time]}"
+      post_file.puts "subject: #{post.values[:subject]}"
+      post_file.puts "hours: #{post.values[:hours]}"
+      post_file.puts "-" * 20
+      post_file.puts ""
+      post_file.puts post.values[:notes]
+    end
+    post_file_name
   end
 end

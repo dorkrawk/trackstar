@@ -5,16 +5,13 @@ require_relative "trackstar/log_helper"
 module Trackstar
   def self.call(options)
     if options[:new]
-      log_options = {}
-      # log_options = Trackstar::LogHelper.presetup(options)
-      Trackstar::LogHelper.setup_log(log_options)
+      Trackstar::LogHelper.setup_log
     elsif options[:post]
-      # extract this out...
-      post = Trackstar::Post.new
-
-      post.build
-
-      post.preview
+      if Trackstar::LogHelper.check_for_existing_log(Dir.pwd)
+        Trackstar::LogHelper.create_post
+      else
+        Trackstar::LogHelper.missing_log
+      end
     end
   end
 end

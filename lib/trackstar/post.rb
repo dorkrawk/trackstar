@@ -2,6 +2,8 @@ class Trackstar::Post
 
   DEFAULT_FIELDS = { subject: :to_s, hours: :to_f, notes: :to_s } # hardcode for now
 
+  attr_accessor :values
+
   def initialize
     @fields = DEFAULT_FIELDS
     @values = {}
@@ -22,19 +24,13 @@ class Trackstar::Post
         retry
       end
     end
-
+    puts ""
   end
 
   def preview
-    puts @values[:date_time]
-    puts "------"
     @values.each do |key, value|
       puts "#{key}: #{value}"
     end
-  end
-
-  def persist
-
   end
 
   private
