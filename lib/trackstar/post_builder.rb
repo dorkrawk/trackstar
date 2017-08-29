@@ -1,4 +1,4 @@
-class Trackstar::Post
+class Trackstar::PostBuilder
 
   DEFAULT_FIELDS = { subject: :to_s, hours: :to_f, notes: :to_s } # hardcode for now
 

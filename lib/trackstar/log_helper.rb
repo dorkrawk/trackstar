@@ -1,4 +1,5 @@
 require "fileutils"
+require "yaml"
 
 class Trackstar::LogHelper
 
@@ -20,6 +21,16 @@ class Trackstar::LogHelper
   def self.check_for_existing_log(dir_path)
     config_path = File.join(dir_path, CONFIG_FILE_NAME)
     FileTest.exists?(config_path)
+  end
+
+  def self.config_yaml
+    config_path = File.join(Dir.pwd, CONFIG_FILE_NAME)
+    config = YAML.load_file(config_path)
+    config
+  end
+
+  def self.post_count
+    Dir["#{POSTS_DIR}/*"].count { |file| File.file?(file) }
   end
 
   def self.missing_log
@@ -84,23 +95,47 @@ class Trackstar::LogHelper
     end
   end
 
+  def self.destroy_log
+    puts "Whoa! We're going to destroy your Trackstar log."
+    post_count = self.post_count
+    puts "That means deleting all #{post_count} posts."
+    puts "Do you really want to do this? (y/n)"
+    confirmation = gets.chomp.downcase
+    if YESES.include?(confirmation)
+      system "rm #{CONFIG_FILE_NAME}"
+      system "rm -r #{POSTS_DIR}"
+      puts "BOOM. gone."
+    else
+      puts "Ok, this log lives another day."
+    end
+  end
+
   def self.create_post
-    post = Trackstar::Post.new
-    post.build
+    post_builder = Trackstar::PostBuilder.new
+    post_builder.build
     puts "Ok, here's your post:"
     puts "-" * 10
-    post.preview
+    post_builder.preview
     puts "-" * 10
     puts "Look good? (y/n)"
     confirmation = gets.chomp.downcase
     if YESES.include?(confirmation)
-      post_file_name = self.persist_post(post)
+      post_file_name = self.persist_post(post_builder)
       puts "Post saved as #{post_file_name}"
     else
       puts "Try again? (y/n)"
       confirmation = gets.chomp.downcase
       self.create_post if YESES.include?(confirmation)
     end
+  end
+
+  def self.show_stats
+    log_name = self.config_yaml['log_name']
+    puts "Stats for #{log_name}"
+    puts "-" * 20
+    puts "post count: #{self.post_count}"
+    last_post = Dir["#{POSTS_DIR}/*.md"].last
+    puts "last post: #{last_post}"
   end
 
   def self.persist_post(post)

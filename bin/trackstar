@@ -7,10 +7,11 @@ require 'optparse'
 
 options = {
   post: true,
-  manual_date: false,
   new: false,
-  chart: nil
+  destroy: false,
+  stats: false
 }
+
 OptionParser.new do |opts|
   opts.banner = %(
   Usage:
@@ -19,27 +20,32 @@ OptionParser.new do |opts|
   Example:
     trackstar -n  # creates new Trackstar log
     trackstar     # creates new Trackstar post in an existing Log
-    trackstar -g  # displays a graph a Trackstar log posts
   )
-
-  opts.on '-d', '--date', 'Manually input date' do
-    options[:manual_date] = true
-  end
 
   opts.on '-n', '--new', 'Create new Trackstar log' do
     options[:post] = false
     options[:new] = true
   end
 
-  opts.on '-ch', '--chart-hours', 'Show chart of hours' do
+  opts.on '-d', '--destroy', 'Destroys the current Trackstar log' do
     options[:post] = false
-    options[:chart] = :hours
+    options[:destroy] = true
   end
 
-  opts.on '-cc', '--chart-count', 'Show chart of count' do
+  opts.on '-s', '--stats', 'Show stats from the current Trackstar log' do
     options[:post] = false
-    options[:chart] = :count
+    options[:stats] = true
   end
+
+  # opts.on '-ch', '--chart-hours', 'Show chart of hours' do
+  #   options[:post] = false
+  #   options[:chart] = :hours
+  # end
+  #
+  # opts.on '-cc', '--chart-count', 'Show chart of count' do
+  #   options[:post] = false
+  #   options[:chart] = :count
+  # end
 
   opts.on_tail '-v', '--version', 'Show version' do
     options[:post] = false
