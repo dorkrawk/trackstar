@@ -111,7 +111,7 @@ class Trackstar::LogHelper
   end
 
   def self.create_post
-    post_builder = Trackstar::PostBuilder.new
+    post_builder = Trackstar::Post.new
     post_builder.build
     puts "Ok, here's your post:"
     puts "-" * 10

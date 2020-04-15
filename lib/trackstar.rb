@@ -1,5 +1,5 @@
 require_relative "trackstar/version"
-require_relative "trackstar/post_builder"
+require_relative "trackstar/post"
 require_relative "trackstar/log_helper"
 
 module Trackstar
