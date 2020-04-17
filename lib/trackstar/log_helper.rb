@@ -29,9 +29,9 @@ class Trackstar::LogHelper
     config
   end
 
-  def self.post_count
-    Dir["#{POSTS_DIR}/*"].count { |file| File.file?(file) }
-  end
+#  def self.post_count
+#    Dir["#{POSTS_DIR}/*"].count { |file| File.file?(file) }
+#  end
 
   def self.missing_log
     puts "Sorry, there doesn't seem to be a Trackstar log here."
@@ -111,16 +111,16 @@ class Trackstar::LogHelper
   end
 
   def self.create_post
-    post_builder = Trackstar::Post.new
-    post_builder.build
+    log = Trackstar::Log.new
+    new_post = log.build_post
     puts "Ok, here's your post:"
     puts "-" * 10
-    post_builder.preview
+    new_post.preview
     puts "-" * 10
     puts "Look good? (y/n)"
     confirmation = gets.chomp.downcase
     if YESES.include?(confirmation)
-      post_file_name = self.persist_post(post_builder)
+      post_file_name = new_post.persist!
       puts "Post saved as #{post_file_name}"
     else
       puts "Try again? (y/n)"
@@ -130,12 +130,12 @@ class Trackstar::LogHelper
   end
 
   def self.show_stats
-    log_name = self.config_yaml['log_name']
-    puts "Stats for #{log_name}"
+    log = Trackstar::Log.new
+    puts "Stats for #{log.name}"
     puts "-" * 20
-    puts "post count: #{self.post_count}"
-    last_post = Dir["#{POSTS_DIR}/*.md"].last
-    puts "last post: #{last_post}"
+    puts "post count: #{log.post_count}"
+    puts "first post: #{log.first_post_file_name}"
+    puts "last post: #{log.last_post_file_name}"
   end
 
   def self.persist_post(post)

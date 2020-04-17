@@ -1,6 +1,7 @@
 require_relative "trackstar/version"
 require_relative "trackstar/post"
 require_relative "trackstar/log_helper"
+require_relative "trackstar/log"
 
 module Trackstar
   def self.call(options)
