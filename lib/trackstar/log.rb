@@ -28,6 +28,12 @@ class Trackstar::Log
     new_post
   end
 
+  def posts
+    @posts ||= Dir["#{POSTS_DIR}/*.md"].sort.map do |file|
+      Trackstar::Post.new(file)
+    end
+  end
+
   def last_post_file_name
     Dir["#{POSTS_DIR}/*.md"].sort.last
   end
@@ -36,10 +42,14 @@ class Trackstar::Log
     Dir["#{POSTS_DIR}/*.md"].sort.first
   end
 
-  # status methods
+  # stats methods
 
   def post_count
     Dir["#{POSTS_DIR}/*"].count { |file| File.file?(file) }
+  end
+
+  def total_hours
+    posts.map { |post| post.values[:hours].to_f }.inject(0, :+)
   end
 
   private

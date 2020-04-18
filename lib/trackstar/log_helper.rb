@@ -29,10 +29,6 @@ class Trackstar::LogHelper
     config
   end
 
-#  def self.post_count
-#    Dir["#{POSTS_DIR}/*"].count { |file| File.file?(file) }
-#  end
-
   def self.missing_log
     puts "Sorry, there doesn't seem to be a Trackstar log here."
   end
@@ -131,24 +127,14 @@ class Trackstar::LogHelper
 
   def self.show_stats
     log = Trackstar::Log.new
+    first_post = log.posts.first
+    last_post = log.posts.last
     puts "Stats for #{log.name}"
     puts "-" * 20
     puts "post count: #{log.post_count}"
-    puts "first post: #{log.first_post_file_name}"
-    puts "last post: #{log.last_post_file_name}"
+    puts "total hours: #{log.total_hours}"
+    puts "first post: #{first_post.values[:date]} - #{first_post.values[:subject]}"
+    puts "last post: #{last_post.values[:date]} - #{last_post.values[:subject]}"
   end
 
-  def self.persist_post(post)
-    subject_stub = self.stubify(post.values[:subject])
-    post_file_name = "posts/#{post.values[:timestamp]}-#{subject_stub}.md"
-    File.open(post_file_name, 'w') do |post_file|
-      post_file.puts "date: #{post.values[:date_time]}"
-      post_file.puts "subject: #{post.values[:subject]}"
-      post_file.puts "hours: #{post.values[:hours]}"
-      post_file.puts "-" * 20
-      post_file.puts ""
-      post_file.puts post.values[:notes]
-    end
-    post_file_name
-  end
 end
