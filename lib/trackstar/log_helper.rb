@@ -125,6 +125,15 @@ class Trackstar::LogHelper
     end
   end
 
+  def self.list_posts(limit)
+    log = Trackstar::Log.new
+    puts "The #{limit} most recent posts from #{log.name}"
+    puts "-" * 10
+    log.posts.first(limit).reverse.each do |post|
+      puts "#{post.values[:date]}: #{post.values[:subject]}"
+    end
+  end
+
   def self.show_stats
     log = Trackstar::Log.new
     first_post = log.posts.first

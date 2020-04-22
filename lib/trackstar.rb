@@ -7,24 +7,18 @@ module Trackstar
   def self.call(options)
     if options[:new]
       Trackstar::LogHelper.setup_log
-    elsif options[:destroy]
-      if Trackstar::LogHelper.check_for_existing_log(Dir.pwd)
+    elsif Trackstar::LogHelper.check_for_existing_log(Dir.pwd)
+      if options[:destroy]
         Trackstar::LogHelper.destroy_log
-      else
-        Trackstar::LogHelper.missing_log
-      end
-    elsif options[:stats]
-      if Trackstar::LogHelper.check_for_existing_log(Dir.pwd)
+      elsif options[:stats]
         Trackstar::LogHelper.show_stats
-      else
-        Trackstar::LogHelper.missing_log
-      end
-    elsif options[:post]
-      if Trackstar::LogHelper.check_for_existing_log(Dir.pwd)
+      elsif options[:post]
         Trackstar::LogHelper.create_post
-      else
-        Trackstar::LogHelper.missing_log
+      elsif options[:list]
+        Trackstar::LogHelper.list_posts(options[:limit])
       end
+    else
+      Trackstar::LogHelper.missing_log
     end
   end
 end

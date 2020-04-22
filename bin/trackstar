@@ -9,7 +9,9 @@ options = {
   post: true,
   new: false,
   destroy: false,
-  stats: false
+  stats: false,
+  list: false,
+  limit: 10
 }
 
 OptionParser.new do |opts|
@@ -35,6 +37,14 @@ OptionParser.new do |opts|
   opts.on '-s', '--stats', 'Show stats from the current Trackstar log' do
     options[:post] = false
     options[:stats] = true
+  end
+
+  opts.on '-l', '--list LIMIT', 'Lists recent eosts from current Trackstar log. Default limit is 10' do |limit|
+    options[:post] = false
+    options[:list] = true
+    if limit && limit.to_i.positive?
+      option[:limit] = limit
+    end
   end
 
   # opts.on '-ch', '--chart-hours', 'Show chart of hours' do
