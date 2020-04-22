@@ -3,7 +3,6 @@
 # require 'trackstar'
 require_relative '../lib/trackstar'
 require 'optparse'
-# include Trackstar
 
 options = {
   post: true,
@@ -39,11 +38,11 @@ OptionParser.new do |opts|
     options[:stats] = true
   end
 
-  opts.on '-l', '--list LIMIT', 'Lists recent eosts from current Trackstar log. Default limit is 10' do |limit|
+  opts.on '-l [LIMIT]', '--list [LIMIT]', Integer, 'Lists recent eosts from current Trackstar log. Default limit is 10' do |limit|
     options[:post] = false
     options[:list] = true
     if limit && limit.to_i.positive?
-      option[:limit] = limit
+      options[:limit] = limit
     end
   end
 
