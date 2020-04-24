@@ -1,22 +1,12 @@
-# Trackstar
+# Trackstar 🏃‍♂️
 
 Track things. Like a star!
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'trackstar'
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install trackstar
+$ gem install trackstar
+```
 
 ## Usage
 
@@ -36,11 +26,46 @@ subject:
 ...
 ```
 
+### Get log stats
+```
+$ trackstar -l
+```
+
+### List recent posts
+```
+$ trackstar -l # lists the 10 most recent posts
+...
+$ trackstar -l 5 # lists the 5 most recent posts
+...
+```
+
 ### Need more help?
 
 ```
 > trackstar -h
 ```
+
+## Customisation
+
+### Editing Post Fields
+
+You can change the fields used in your Trackstar log by editing the `post_fields` values in the `trackstar.yaml` config file. The format is:
+```yaml
+  field_name: conversation_method
+```
+where `conversation_method` is a Ruby String method for type conversion.
+
+### Editing Post Formatting
+
+You can add formatting to the post Markdown by editing the `post_formatting` values in the `trackstar.yaml` config file. The format is:
+```yaml
+post_formatting:
+  field_name: formatting_method
+``` 
+where `formatting_method` is a method implemented in the `Trackstar::Post` class to add formatting after a field.
+
+Currently supported formatting methods:
+- `hr_after`: Adds a horizontal rule after the field
 
 ## Development
 
