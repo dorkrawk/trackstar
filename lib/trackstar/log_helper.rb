@@ -7,6 +7,13 @@ class Trackstar::LogHelper
   POSTS_DIR = 'posts'
   YESES = %w(y yes yep sure uhhuh ok)
 
+  def self.print_trackstar_logo
+    puts "*" * 15
+    puts "🏃‍♂️ Trackstar 🏃‍♂️"
+    puts "*" * 15
+    puts ""
+  end
+
   def self.set_up_install_path
     install_path = Dir.pwd
     existing_log = self.check_for_existing_log(install_path)
@@ -31,12 +38,15 @@ class Trackstar::LogHelper
 
   def self.missing_log
     puts "Sorry, there doesn't seem to be a Trackstar log here."
+    puts "Enter `trackstar -n` to create a new log."
   end
 
   def self.set_up_name
-    puts "So, what do you want to call this?"
-    # add execption catching and good stuff like that
-    name = gets.chomp
+    name = ""
+    while name.empty?
+      puts "So, what do you want to call this log?"
+      name = gets.chomp.to_s
+    end
     name
   end
 
@@ -69,6 +79,7 @@ class Trackstar::LogHelper
   end
 
   def self.setup_log
+    self.print_trackstar_logo
     log_options = {}
     puts "Ok! Let's set up your Trackstar log!"
     puts "------------------------------------"
@@ -92,6 +103,7 @@ class Trackstar::LogHelper
   end
 
   def self.destroy_log
+    self.print_trackstar_logo
     puts "Whoa! We're going to destroy your Trackstar log."
     post_count = self.post_count
     puts "That means deleting all #{post_count} posts."
@@ -107,6 +119,7 @@ class Trackstar::LogHelper
   end
 
   def self.create_post
+    self.print_trackstar_logo
     log = Trackstar::Log.new
     new_post = log.build_post
     puts "Ok, here's your post:"
@@ -135,13 +148,16 @@ class Trackstar::LogHelper
   end
 
   def self.show_stats
+    self.print_trackstar_logo
     log = Trackstar::Log.new
     first_post = log.posts.first
     last_post = log.posts.last
     puts "Stats for #{log.name}"
     puts "-" * 20
-    puts "post count: #{log.post_count}"
+    puts "total post count: #{log.post_count}"
     puts "total hours: #{log.total_hours}"
+    puts "post count this week: #{log.current_week_post_count}"
+    puts "hours this week: #{log.current_week_hours}"
     puts "first post: #{first_post.values[:date]} - #{first_post.values[:subject]}"
     puts "last post: #{last_post.values[:date]} - #{last_post.values[:subject]}"
   end

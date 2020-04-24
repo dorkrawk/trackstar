@@ -1,3 +1,5 @@
+require 'active_support/core_ext'
+
 class Trackstar::Log
 
   CONFIG_FILE_NAME = 'trackstar.yaml'
@@ -13,7 +15,7 @@ class Trackstar::Log
   def build_post
     new_post = Trackstar::Post.new
     puts "New Post For #{@name}"
-    puts "#{new_post.values[:date_time]}"
+    puts "#{new_post.values[:date]}"
     puts "---------------------"
     new_post.fields.each do |key, casting_method|
       begin
@@ -34,12 +36,9 @@ class Trackstar::Log
     end
   end
 
-  def last_post_file_name
-    Dir["#{POSTS_DIR}/*.md"].sort.last
-  end
-
-  def first_post_file_name
-    Dir["#{POSTS_DIR}/*.md"].sort.first
+  def current_week_posts
+    start_of_week_timestamp = DateTime.now.beginning_of_week.to_time.to_i
+    @current_week_posts ||= posts.select { |p| p.values[:timestamp].to_i > start_of_week_timestamp }
   end
 
   # stats methods
@@ -48,8 +47,20 @@ class Trackstar::Log
     Dir["#{POSTS_DIR}/*"].count { |file| File.file?(file) }
   end
 
+  def current_week_post_count
+    current_week_posts.count
+  end
+
+  def count_hours(post_list=posts)
+    post_list.map { |post| post.values[:hours].to_f }.inject(0, :+)
+  end
+
   def total_hours
-    posts.map { |post| post.values[:hours].to_f }.inject(0, :+)
+    count_hours
+  end
+
+  def current_week_hours
+    count_hours(current_week_posts)
   end
 
   private
