@@ -2,13 +2,13 @@ require 'pathname'
 
 class Trackstar::Post
 
-  DEFAULT_FIELDS = { subject: :to_s, hours: :to_f, notes: :to_s } # hardcode for now
-
   attr_accessor :values
-  attr_reader :fields
+  attr_reader :fields, :formatting
 
   def initialize(path = nil)
-    @fields = DEFAULT_FIELDS
+    @log = Trackstar::Log.new
+    @fields = @log.fields
+    @formatting = @log.formatting
     @values = {}
     
     if path
@@ -39,10 +39,13 @@ class Trackstar::Post
     post_file_path = "#{Trackstar::LogHelper::POSTS_DIR}/#{file_name}"
     File.open(post_file_path, 'w') do |post_file|
       post_file.puts "date: #{@values[:date]}"
-      post_file.puts "subject: #{@values[:subject]}"
-      post_file.puts "hours: #{@values[:hours]}"
-      post_file.puts "-" * 20
-      post_file.puts @values[:notes]
+
+      fields.keys.each do |field_name|
+        post_file.puts "#{field_name.to_s}: #{values[field_name]}"
+        if formatting.include? field_name
+          self.send(formatting[field_name], post_file)
+        end
+      end
     end
     post_file_path
   end
@@ -65,6 +68,12 @@ class Trackstar::Post
 
   def date_time_format(timestamp)
     timestamp.strftime("%b %e %Y %l:%M %P")
+  end
+
+  # persisted post formatting methods
+  
+  def hr_after(file_handle)
+    file_handle.puts "-" * 20
   end
 
 end

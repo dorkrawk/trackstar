@@ -75,6 +75,14 @@ class Trackstar::LogHelper
       config_file.puts ""
       config_file.puts "log_name: #{log_options[:name]}"
       config_file.puts "stub: #{log_options[:name_stub]}"
+      config_file.puts "post_fields:"
+      Trackstar::Log::DEFAULT_FIELDS.each do |field_name, conversion_method|
+        config_file.puts "  #{field_name.to_s}: #{conversion_method.to_s}"
+      end
+      config_file.puts "post_formatting:"
+      Trackstar::Log::DEFAULT_FORMATTING.each do |field_name, format|
+        config_file.puts "  #{field_name.to_s}: #{format.to_s}"
+      end
     end
   end
 

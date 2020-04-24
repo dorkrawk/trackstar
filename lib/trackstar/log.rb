@@ -4,11 +4,23 @@ class Trackstar::Log
 
   CONFIG_FILE_NAME = 'trackstar.yaml'
   POSTS_DIR = 'posts'
+  DEFAULT_FIELDS = { subject: :to_s, hours: :to_f, notes: :to_s }
+  DEFAULT_FORMATTING = { hours: :hr_after }
 
-  attr_reader :name
+  attr_reader :name, :fields, :formatting
 
   def initialize
     @config_yaml = load_config_yaml 
+    if @config_yaml['post_fields']
+      @fields = @config_yaml['post_fields'].transform_keys(&:to_sym).transform_values(&:to_sym)
+    else
+      @fields = DEFAULT_FIELDS
+    end
+    if @config_yaml['post_formatting']
+      @formatting = @config_yaml['post_formatting'].transform_keys(&:to_sym).transform_values(&:to_sym)
+    else
+      @formatting = DEFAULT_FORMATTING
+    end
     @name = @config_yaml['log_name']
   end  
 
