@@ -1,6 +1,10 @@
 # Trackstar 🏃‍♂️
 
-Track things. Like a star!
+*Track things. Like a star!*
+
+Trackstar is a simple, command line based practice tracker. It creates human-readable Markdown files for every entry in your log.
+
+Use the built in stats functionality to get some insights. If you need to edit or review entries, just open up the files.
 
 ## Installation
 
@@ -16,7 +20,11 @@ $ gem install trackstar
 $ trackstar -n "Guitar Practice"
 ```
 
+This will create a directory for your log, a trackstar.yaml config file, and a directory called `posts` where all of your entries will go.
+
 ### Create a new post in an existing Trackstar log
+
+To write new posts in your log, you will to run the `trackstar` command from within your log directory. When you write a new log, a new Markdown file will be created in the `posts` directory.
 
 ```
 $ trackstar

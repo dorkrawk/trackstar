@@ -46,16 +46,6 @@ OptionParser.new do |opts|
     end
   end
 
-  # opts.on '-ch', '--chart-hours', 'Show chart of hours' do
-  #   options[:post] = false
-  #   options[:chart] = :hours
-  # end
-  #
-  # opts.on '-cc', '--chart-count', 'Show chart of count' do
-  #   options[:post] = false
-  #   options[:chart] = :count
-  # end
-
   opts.on_tail '-v', '--version', 'Show version' do
     options[:post] = false
     puts "trackstar v#{Trackstar::VERSION}"

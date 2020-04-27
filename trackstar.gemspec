@@ -9,10 +9,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dave"]
   spec.email         = ["dave.schwantes@gmail.com"]
 
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com' to prevent pushes to rubygems.org, or delete to allow pushes to any server."
-  end
-
   spec.summary       = "A commandline based progress tracker."
   spec.description   = "Create a simple log and track your practice hours from the commandline."
   spec.homepage      = "https://github.com/dorkrawk/trackstar"
