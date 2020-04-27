@@ -1,5 +1,7 @@
 # Trackstar 🏃‍♂️
 
+[![Gem Version](https://badge.fury.io/rb/trackstar.svg)](https://badge.fury.io/rb/trackstar)
+
 *Track things. Like a star!*
 
 Trackstar is a simple, command line based practice tracker. It creates human-readable Markdown files for every entry in your log.
