@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe Trackstar do
-  it 'has a version number' do
-    expect(Trackstar::VERSION).not_to be nil
+
+  it 'works' do
+    _(true).must_equal true
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  it 'has a version number' do
+    _(Trackstar::VERSION).wont_be_nil
   end
+
 end
