@@ -5,6 +5,7 @@ class Trackstar::Log
   CONFIG_FILE_NAME = 'trackstar.yaml'
   POSTS_DIR = 'posts'
   DEFAULT_FIELDS = { subject: :to_s, hours: :to_f, notes: :to_s }
+  MULTILINE_FIELDS = [:notes]
   DEFAULT_FORMATTING = { hours: :hr_after }
 
   attr_reader :name, :fields, :formatting
@@ -31,8 +32,13 @@ class Trackstar::Log
     puts "---------------------"
     new_post.fields.each do |key, casting_method|
       begin
-        puts "#{key}: "
-        new_post.values[key] = gets.chomp.send(casting_method)
+        if MULTILINE_FIELDS.include?(key)
+          puts "#{key} (press [tab][enter] to end entry):"
+          new_post.values[key] = gets("\t\n").chomp.send(casting_method)
+        else
+          puts "#{key}: "
+          new_post.values[key] = gets.chomp.send(casting_method)
+        end
       rescue => e
         puts "Sorry, that's not a valid input for #{key}. Let's try this again..."
         retry
